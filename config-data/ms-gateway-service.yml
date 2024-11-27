@@ -31,9 +31,11 @@ spring:
 
       routes:
         - id: ms-catalogo-service
-          uri: lb://ms-catalogo-service
-          predicates:
-            - Path=/category/**, /product/**
+        - uri: lb://ms-catalogo-service
+        - predicates:
+          - Path=/category/**, /product/**
+
+
 
         - id: ms-auth-service
           uri: lb://ms-auth-service  # Ruta para el servicio de autenticación
