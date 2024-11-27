@@ -43,8 +43,8 @@ spring:
           predicates:
             - Path=/auth/**  # Rutas que comienzan con `/auth/` se enrutan a este servicio.
 
-        - id: ms-producto-service
-          uri: lb://ms-producto-service  # Ruta para el servicio ms-producto-service
+        - id: ms-catalogo-service
+          uri: lb://ms-catalogo-service  # Ruta para el servicio ms-producto-service
           predicates:
             - Path=/product/**  # Rutas que comienzan con `/product/` se enrutan a este servicio.
             #filters:
