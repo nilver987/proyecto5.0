@@ -28,10 +28,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Para sanea
             <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
                 <div class="text-lg font-medium">{{ title }}</div>
                 <button mat-icon-button (click)="cancelForm()" [tabIndex]="-1">
-                    <mat-icon
-                        class="text-current"
-                        [svgIcon]="'heroicons_outline:x-mark'">
-                    </mat-icon>
+                    <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
                 </button>
             </div>
 
@@ -134,6 +131,7 @@ export class ProductNewComponent implements OnInit {
 
     ngOnInit(): void {}
 
+    // Selección de la imagen
     onImageSelected(event: Event): void {
         const file = (event.target as HTMLInputElement).files?.[0];
         if (file) {
@@ -148,6 +146,7 @@ export class ProductNewComponent implements OnInit {
         }
     }
 
+    // Validar el tamaño de la imagen
     private validateFile(file: File): boolean {
         this.imageError = null;
         if (file.size > this.MAX_FILE_SIZE) {
@@ -157,6 +156,7 @@ export class ProductNewComponent implements OnInit {
         return true;
     }
 
+    // Eliminar la imagen
     removeImage(): void {
         this.imagePreview = null;
         this.imageError = null;
@@ -167,12 +167,14 @@ export class ProductNewComponent implements OnInit {
         }
     }
 
+    // Guardar formulario
     saveForm(): void {
         if (this.productForm.valid) {
             this._matDialog.close(this.productForm.value);
         }
     }
 
+    // Cancelar formulario
     cancelForm(): void {
         this._matDialog.close(null);
     }

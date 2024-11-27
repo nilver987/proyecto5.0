@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductEditComponent } from '../components/form/product-edit.component';
 import { ConfirmDialogService } from "../../../../../shared/confirm-dialog/confirm-dialog.service";
 import { ProductListComponent } from "../components";
-import {ProductService} from "../../../../../providers/services/setup/product.service";
+import { ProductService } from "../../../../../providers/services/setup/product.service";
 
 
 @Component({
@@ -54,7 +54,8 @@ export class ProductContainerComponent implements OnInit {
                 this.products = response;
             },
             (error) => {
-                this.error = error;
+                this.error = 'Hubo un error al obtener los productos. Intente nuevamente.';
+                console.error(error); // Mejor manejo de errores
             }
         );
     }
@@ -62,7 +63,7 @@ export class ProductContainerComponent implements OnInit {
     public eventNew($event: boolean): void {
         if ($event) {
             const productForm = this._matDialog.open(ProductNewComponent);
-            productForm.componentInstance.title = 'Nuevo Producto' || null;
+            productForm.componentInstance.title = 'Nuevo Producto'; // Removido '|| null'
             productForm.afterClosed().subscribe((result: any) => {
                 if (result) {
                     this.saveProduct(result);
@@ -74,22 +75,19 @@ export class ProductContainerComponent implements OnInit {
     saveProduct(data: Object): void {
         this._productService.add$(data).subscribe((response) => {
             if (response) {
-                this.getProducts();
+                this.getProducts(); // Recarga la lista de productos después de guardar
             }
         });
     }
 
     eventEdit(idProduct: number): void {
-        const listById = this._productService
-            .getById$(idProduct)
-            .subscribe(async (response) => {
-                this.product = (response) || {};
-                this.openModalEdit(this.product);
-                listById.unsubscribe();
-            });
+        this._productService.getById$(idProduct).subscribe((response) => {
+            this.product = response || new Product(); // Asegúrate de tener una instancia válida
+            this.openModalEdit(this.product);
+        });
     }
 
-    openModalEdit(data: Product) {
+    openModalEdit(data: Product): void {
         console.log(data);
         if (data) {
             const productForm = this._matDialog.open(ProductEditComponent);
@@ -103,20 +101,19 @@ export class ProductContainerComponent implements OnInit {
         }
     }
 
-    editProduct(idProduct: number, data: Object) {
+    editProduct(idProduct: number, data: Object): void {
         this._productService.update$(idProduct, data).subscribe((response) => {
             if (response) {
-                this.getProducts();
+                this.getProducts(); // Recarga la lista de productos después de editar
             }
         });
     }
 
-    public eventDelete(idProduct: number) {
+    public eventDelete(idProduct: number): void {
         this._confirmDialogService.confirmDelete().then(() => {
-            this._productService.delete$(idProduct).subscribe((response) => {
-                this.products = response;
+            this._productService.delete$(idProduct).subscribe(() => {
+                this.getProducts(); // Actualiza la lista de productos después de eliminar
             });
-            this.getProducts();
-        }).catch(() => {});
+        }).catch(() => {}); // Manejo de cancelación o error
     }
 }

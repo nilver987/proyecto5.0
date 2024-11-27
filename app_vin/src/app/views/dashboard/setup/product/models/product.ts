@@ -5,16 +5,15 @@ export class Product {
     nombre?: string;          // Nombre del producto
     imagen?: Uint8Array;      // Imagen almacenada como array de bytes (longblob)
     precio?: number;          // Precio del producto
+    category_id?: number;     // ID de la categoría
 
     // Campo derivado para mostrar la imagen en base64
     get imagenUrl(): string | null {
-        return this.imagen
-            ? `data:image/png;base64,${btoa(
-                new Uint8Array(this.imagen).reduce(
-                    (data, byte) => data + String.fromCharCode(byte),
-                    ''
-                )
-            )}` // Convierte la imagen binaria a base64
-            : null;
+        if (this.imagen) {
+            const binaryString = String.fromCharCode(...this.imagen);
+            return `data:image/png;base64,${btoa(binaryString)}`; // Convierte la imagen binaria a base64
+        }
+        return null;
     }
 }
+

@@ -33,7 +33,7 @@ import { MatDialog } from '@angular/material/dialog';
                             <th class="w-2/6 table-header text-center px-5 border-r">Nombre</th>
                             <th class="w-2/6 table-header text-center px-5 border-r">Modelo</th>
                             <th class="w-2/6 table-header text-center px-5 border-r">Código</th>
-                            <th class="w-1/6 table-header text-center px-5 border-r">Precio</th> <!-- Nueva columna para el precio -->
+                            <th class="w-1/6 table-header text-center px-5 border-r">Precio</th>
                             <th class="w-1/6 table-header text-center border-r">Estado</th>
                             <th class="w-2/6 table-header text-center">Acciones</th>
                         </tr>
@@ -41,22 +41,30 @@ import { MatDialog } from '@angular/material/dialog';
                         <tbody class="bg-white">
                         <tr *ngFor="let product of products; let i = index" class="hover:bg-gray-100">
                             <td class="w-1/6 p-2 text-center border-b">{{ i + 1 }}</td>
+
+                            <!-- Imagen del producto -->
                             <td class="w-1/6 p-2 text-center border-b">
-                                <img [src]="'data:image/jpeg;base64,' + product.imagen"
+                                <img *ngIf="product.imagenUrl"
+                                     [src]="product.imagenUrl"
                                      alt="Imagen producto"
-                                     class="w-12 h-12 object-cover mx-auto rounded"
-                                     *ngIf="product.imagen && product.imagen !== ''" />
-                                <mat-icon *ngIf="!product.imagen || product.imagen === ''" class="text-gray-400">image_not_available</mat-icon>
+                                     class="w-12 h-12 object-cover mx-auto rounded" />
+                                <mat-icon *ngIf="!product.imagenUrl" class="text-gray-400">image_not_available</mat-icon>
                             </td>
+
+                            <!-- Nombre, Modelo, Código y Precio -->
                             <td class="w-2/6 p-2 text-start border-b text-sm">{{ product.nombre }}</td>
                             <td class="w-2/6 p-2 text-start border-b text-sm">{{ product.modelo }}</td>
                             <td class="w-2/6 p-2 text-start border-b text-sm">{{ product.codigo }}</td>
-                            <td class="w-1/6 p-2 text-center border-b text-sm">{{ product.precio | currency }}</td> <!-- Mostrar el precio -->
+                            <td class="w-1/6 p-2 text-center border-b text-sm">{{ product.precio | currency }}</td>
+
+                            <!-- Estado del producto -->
                             <td class="w-1/6 p-2 text-center border-b text-sm">
                                 <div class="relative grid items-center font-sans font-bold uppercase whitespace-nowrap select-none bg-green-500/20 text-green-600 py-1 px-2 text-xs rounded-md">
                                     <span>ACTIVO</span>
                                 </div>
                             </td>
+
+                            <!-- Acciones -->
                             <td class="w-2/6 p-2 text-center border-b text-sm">
                                 <div class="flex justify-center space-x-3">
                                     <mat-icon class="text-amber-400 hover:text-amber-500 cursor-pointer" (click)="goEdit(product.id)">edit</mat-icon>
@@ -81,19 +89,21 @@ export class ProductListComponent implements OnInit {
 
     ngOnInit() {}
 
+    // Función para crear un nuevo producto
     public goNew(): void {
-        this.eventNew.emit(true); // Emitir el evento para crear un nuevo producto
+        this.eventNew.emit(true);
     }
 
+    // Función para editar un producto
     public goEdit(id: number): void {
-        this.eventEdit.emit(id); // Emitir el evento con el ID del producto a editar
+        this.eventEdit.emit(id);
     }
 
+    // Función para eliminar un producto
     public goDelete(id: number): void {
-        // Confirmar la eliminación del producto
         const confirmation = window.confirm('¿Estás seguro de que deseas eliminar este producto?');
         if (confirmation) {
-            this.eventDelete.emit(id); // Emitir el evento con el ID del producto a eliminar
+            this.eventDelete.emit(id);
         }
     }
 }

@@ -30,24 +30,17 @@ spring:
           # Habilita el descubrimiento dinámico de rutas basadas en los servicios registrados en Eureka (utiliza `lb://` para balanceo de carga).
 
       routes:
-        - id: ms-catalogo-service
-          uri: lb://ms-catalogo-service  # Ruta para el servicio ms-catalogo-service
+        - id: ms-catalog-service
+          uri: lb://ms-catalog-service
           predicates:
-            - Path=/category/**  # Rutas que comienzan con `/category/` se enrutan a este servicio.
-          #filters:
-           # - AuthFilter  # Filtro de autorización (asumiblemente personalizado).
+            - Path=/category/**, /product/**
 
         - id: ms-auth-service
           uri: lb://ms-auth-service  # Ruta para el servicio de autenticación
           predicates:
             - Path=/auth/**  # Rutas que comienzan con `/auth/` se enrutan a este servicio.
 
-        - id: ms-producto-service
-          uri: lb://ms-producto-service  # Ruta para el servicio ms-producto-service
-          predicates:
-            - Path=/product/**  # Rutas que comienzan con `/product/` se enrutan a este servicio.
-          #filters:
-           # - AuthFilter  # Filtro de autorización.
+
 
         - id: ms-envio-service
           uri: lb://ms-envio-service  # Ruta para el servicio ms-envio-service
