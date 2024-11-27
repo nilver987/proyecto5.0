@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Category } from '../../models/category';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Category } from '../../models/category';
 
 @Component({
     selector: 'app-category-edit',
@@ -17,9 +17,9 @@ import { Category } from '../../models/category';
         ReactiveFormsModule,
         MatIconModule,
         MatButtonModule,
+        MatSlideToggleModule,
         MatFormFieldModule,
         MatInputModule,
-        MatSlideToggleModule
     ],
     template: `
         <div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6">
@@ -31,40 +31,42 @@ import { Category } from '../../models/category';
                 </button>
             </div>
 
-            <!-- Compose form -->
+            <!-- Formulario de edición de categoría -->
             <form class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto" [formGroup]="categoryForm">
+                <!-- Campo para el nombre -->
                 <mat-form-field>
-                    <mat-label>Franquicia</mat-label>
-                    <input matInput formControlName="franchise" />
-                    <mat-error *ngIf="categoryForm.get('franchise')?.hasError('required')">
-                        La franquicia es obligatoria.
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre" />
+                    <mat-error *ngIf="categoryForm.get('nombre')?.hasError('required')">
+                        El nombre es obligatorio.
                     </mat-error>
                 </mat-form-field>
 
+                <!-- Campo para la descripción (opcional) -->
                 <mat-form-field>
-                    <mat-label>Tipo</mat-label>
-                    <input matInput formControlName="type" />
-                    <mat-error *ngIf="categoryForm.get('type')?.hasError('required')">
-                        El tipo es obligatorio.
+                    <mat-label>Descripción</mat-label>
+                    <input matInput formControlName="discripcion" />
+                    <mat-error *ngIf="categoryForm.get('discripcion')?.hasError('required')">
+                        La descripción es opcional.
                     </mat-error>
                 </mat-form-field>
 
+                <!-- Campo para el código (obligatorio) -->
                 <mat-form-field>
-                    <mat-label>Popularidad</mat-label>
-                    <input matInput formControlName="popularity" type="number" />
-                    <mat-error *ngIf="categoryForm.get('popularity')?.hasError('required')">
-                        La popularidad es obligatoria.
-                    </mat-error>
-                    <mat-error *ngIf="categoryForm.get('popularity')?.hasError('min')">
-                        La popularidad no puede ser negativa.
+                    <mat-label>Código</mat-label>
+                    <input matInput formControlName="codigo" type="number" />
+                    <mat-error *ngIf="categoryForm.get('codigo')?.hasError('required')">
+                        El código es obligatorio.
                     </mat-error>
                 </mat-form-field>
 
-                <!-- Actions -->
+                <!-- Acciones -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between mt-4 sm:mt-6">
                     <div class="flex space-x-2 items-center mt-4 sm:mt-0 ml-auto">
                         <button mat-stroked-button [color]="'warn'" (click)="cancelForm()">Cancelar</button>
-                        <button mat-stroked-button [color]="'primary'" (click)="saveForm()" [disabled]="categoryForm.invalid">Guardar</button>
+                        <button mat-stroked-button [color]="'primary'" (click)="saveForm()" [disabled]="categoryForm.invalid">
+                            Guardar
+                        </button>
                     </div>
                 </div>
             </form>
@@ -73,40 +75,45 @@ import { Category } from '../../models/category';
 })
 export class CategoryEditComponent implements OnInit {
     @Input() title: string = '';
-    @Input() category: Category = new Category();
+    @Input() category: Category = new Category(); // Categoria a editar
 
-    categoryForm: FormGroup;
+    categoryForm: FormGroup; // Formulario de categoría
 
     constructor(
         private formBuilder: FormBuilder,
         private _matDialog: MatDialogRef<CategoryEditComponent>
     ) {}
 
-    ngOnInit(): void {
-        // Initialize the form with controls for franchise, type, and popularity
-        this.categoryForm = new FormGroup({
-            franchise: new FormControl(this.category.franchise || '', [Validators.required]),
-            type: new FormControl(this.category.type || '', [Validators.required]),
-            popularity: new FormControl(this.category.popularity || '', [Validators.required, Validators.min(0)]),
-        });
-
-        // If category is passed, patch the form with category values
+    ngOnInit() {
+        // Inicializamos el formulario con los campos de nombre, descripción y código
         if (this.category && this.category.id) {
-            this.categoryForm.patchValue({
-                franchise: this.category.franchise,
-                type: this.category.type,
-                popularity: this.category.popularity
+            this.categoryForm = new FormGroup({
+                nombre: new FormControl(this.category.nombre || '', [Validators.required]),
+                discripcion: new FormControl(this.category.discripcion || '', []), // Manteniendo discripcion
+                codigo: new FormControl(this.category.codigo || '', [Validators.required]),
+            });
+        } else {
+            this.categoryForm = new FormGroup({
+                nombre: new FormControl('', [Validators.required]),
+                discripcion: new FormControl('', []), // Manteniendo discripcion
+                codigo: new FormControl('', [Validators.required]),
             });
         }
     }
 
+    // Guardamos el formulario si es válido
     public saveForm(): void {
         if (this.categoryForm.valid) {
-            this._matDialog.close(this.categoryForm.value); // Close the dialog with form data
+            const formData = this.categoryForm.value;
+            console.log('Datos guardados: ', formData); // Verificar los datos antes de cerrar el diálogo
+            this._matDialog.close(formData); // Cierra el diálogo con los datos del formulario
+        } else {
+            console.log('Formulario inválido');
         }
     }
 
+    // Cancelamos y cerramos el formulario sin guardar cambios
     public cancelForm(): void {
-        this._matDialog.close(''); // Close the dialog without sending any data
+        this._matDialog.close(''); // Cierra el diálogo sin pasar ningún dato
     }
 }

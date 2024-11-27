@@ -68,7 +68,7 @@ import { MatInputModule } from '@angular/material/input';
         </div>
     `,
 })
-export class CategoryNewComponent implements OnInit {
+export class PedidoNewComponent implements OnInit {
     @Input() title: string = '';
     abcForms: any;
     categoryForm = new FormGroup({
@@ -78,7 +78,7 @@ export class CategoryNewComponent implements OnInit {
         code: new FormControl('', [Validators.required]),
     });
 
-    constructor(private _matDialog: MatDialogRef<CategoryNewComponent>) {}
+    constructor(private _matDialog: MatDialogRef<PedidoNewComponent>) {}
 
     ngOnInit() {
         this.abcForms = abcForms;

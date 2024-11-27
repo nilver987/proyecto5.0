@@ -29,24 +29,19 @@ import { MatDialog } from '@angular/material/dialog';
                         <thead class="bg-primary-600 text-white">
                         <tr>
                             <th class="w-1/6 table-head text-center px-5 border-r">#</th>
-                            <th class="w-2/6 table-header text-center px-5 border-r">Franquicia</th>
-                            <th class="w-2/6 table-header text-center px-5 border-r">Tipo</th>
-                            <th class="w-2/6 table-header text-center px-5 border-r">Popularidad</th>
-                            <th class="w-1/6 table-header text-center border-r">Estado</th>
+                            <th class="w-2/6 table-header text-center px-5 border-r">Nombre</th>
+                            <th class="w-2/6 table-header text-center px-5 border-r">Discripcion</th>
+                            <th class="w-2/6 table-header text-center px-5 border-r">Codigo</th>
                             <th class="w-2/6 table-header text-center">Acciones</th>
                         </tr>
                         </thead>
                         <tbody class="bg-white">
                         <tr *ngFor="let r of categories; let i = index" class="hover:bg-gray-100">
                             <td class="w-1/6 p-2 text-center border-b">{{ i + 1 }}</td>
-                            <td class="w-2/6 p-2 text-start border-b text-sm">{{ r.franchise }}</td>
-                            <td class="w-2/6 p-2 text-start border-b text-sm">{{ r.type }}</td>
-                            <td class="w-2/6 p-2 text-start border-b text-sm">{{ r.popularity }}</td>
-                            <td class="w-1/6 p-2 text-center border-b text-sm">
-                                <div class="relative grid items-center font-sans font-bold uppercase whitespace-nowrap select-none bg-green-500/20 text-green-600 py-1 px-2 text-xs rounded-md" style="opacity: 1">
-                                    <span class="">ACTIVO</span>
-                                </div>
-                            </td>
+                            <td class="w-2/6 p-2 text-start border-b text-sm">{{ r.nombre }}</td>
+                            <td class="w-2/6 p-2 text-start border-b text-sm">{{ r.discripcion }}</td>
+                            <td class="w-2/6 p-2 text-start border-b text-sm">{{ r.codigo }}</td>
+
                             <td class="w-2/6 p-2 text-center border-b text-sm">
                                 <div class="flex justify-center space-x-3">
                                     <mat-icon class="text-amber-400 hover:text-amber-500 cursor-pointer" (click)="goEdit(r.id)">edit</mat-icon>

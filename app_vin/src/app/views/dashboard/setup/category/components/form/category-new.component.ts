@@ -35,29 +35,27 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
             <!-- Compose form -->
             <form class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto" [formGroup]="categoryForm">
                 <mat-form-field>
-                    <mat-label>Franquicia</mat-label>
-                    <input matInput formControlName="franchise" />
-                    <mat-error *ngIf="categoryForm.get('franchise')?.hasError('required')">
-                        La franquicia es obligatoria.
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre" />
+                    <mat-error *ngIf="categoryForm.get('nombre')?.hasError('required')">
+                        El nombre es obligatorio.
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
-                    <mat-label>Tipo</mat-label>
-                    <input matInput formControlName="type" />
-                    <mat-error *ngIf="categoryForm.get('type')?.hasError('required')">
-                        El tipo es obligatorio.
-                    </mat-error>
+                    <mat-label>Descripción</mat-label>
+                    <input matInput formControlName="discripcion" />
+                    <!-- Este campo es opcional, por lo que no tendrá un mensaje de error obligatorio -->
                 </mat-form-field>
 
                 <mat-form-field>
-                    <mat-label>Popularidad</mat-label>
-                    <input matInput formControlName="popularity" type="number" />
-                    <mat-error *ngIf="categoryForm.get('popularity')?.hasError('required')">
-                        La popularidad es obligatoria.
+                    <mat-label>Código</mat-label>
+                    <input matInput formControlName="codigo" type="number" />
+                    <mat-error *ngIf="categoryForm.get('codigo')?.hasError('required')">
+                        El código es obligatorio.
                     </mat-error>
-                    <mat-error *ngIf="categoryForm.get('popularity')?.hasError('min')">
-                        La popularidad debe ser un número positivo.
+                    <mat-error *ngIf="categoryForm.get('codigo')?.hasError('min')">
+                        El código debe ser un valor mayor o igual a 0.
                     </mat-error>
                 </mat-form-field>
 
@@ -83,15 +81,15 @@ export class CategoryNewComponent implements OnInit {
     ngOnInit(): void {
         // Inicializa el formulario con las validaciones
         this.categoryForm = new FormGroup({
-            franchise: new FormControl('', [Validators.required]), // Validación para franquicia
-            type: new FormControl('', [Validators.required]), // Validación para tipo
-            popularity: new FormControl('', [Validators.required, Validators.min(0)]), // Validación para popularidad
+            nombre: new FormControl('', [Validators.required]), // Validación para nombre (obligatorio)
+            discripcion: new FormControl(''), // No tiene validación 'required', es opcional
+            codigo: new FormControl('', [Validators.required, Validators.min(0)]), // Validación para código (obligatorio y mayor que 0)
         });
     }
 
     // Método para guardar los datos del formulario
     public saveForm(): void {
-        if (this.categoryForm.valid) {
+        if (this.categoryForm.valid || !this.categoryForm.get('discripcion')?.value) {
             this._matDialog.close(this.categoryForm.value); // Cierra el diálogo y pasa los datos del formulario
         }
     }

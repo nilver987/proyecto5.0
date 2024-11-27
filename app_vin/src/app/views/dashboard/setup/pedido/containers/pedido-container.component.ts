@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CategoryNewComponent } from '../components/form/pedido-new.component';
+import { PedidoNewComponent } from '../components/form/pedido-new.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoryEditComponent } from '../components/form/pedido-edit.component';
 import {ConfirmDialogService} from "../../../../../shared/confirm-dialog/confirm-dialog.service";
@@ -17,7 +17,7 @@ import {CategoryService} from "../../../../../providers/services/setup/category.
         CommonModule,
         RouterOutlet,
         PedidoListComponent,
-        CategoryNewComponent,
+        PedidoNewComponent,
         CategoryEditComponent,
         FormsModule,
         ReactiveFormsModule,
@@ -61,7 +61,7 @@ export class CategoryContainerComponent implements OnInit {
 
     public eventNew($event: boolean): void {
         if ($event) {
-            const categoryForm = this._matDialog.open(CategoryNewComponent);
+            const categoryForm = this._matDialog.open(PedidoNewComponent);
             categoryForm.componentInstance.title = 'Nueva Categoría' || null;
             categoryForm.afterClosed().subscribe((result: any) => {
                 if (result) {

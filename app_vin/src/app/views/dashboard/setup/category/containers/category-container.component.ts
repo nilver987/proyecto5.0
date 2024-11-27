@@ -100,7 +100,7 @@ export class CategoryContainerComponent implements OnInit {
         }
 
         const categoryForm = this._matDialog.open(CategoryEditComponent);
-        categoryForm.componentInstance.title = `Editar <b>${categoryToEdit.franchise || categoryToEdit.id}</b>`;
+        categoryForm.componentInstance.title = `Editar <b>${categoryToEdit.nombre || categoryToEdit.id}</b>`;
         categoryForm.componentInstance.category = { ...categoryToEdit }; // Copia para evitar mutación
 
         categoryForm.afterClosed().subscribe((result: Category) => {
@@ -128,13 +128,19 @@ export class CategoryContainerComponent implements OnInit {
     public eventDelete(idCategory: number) {
         this._confirmDialogService.confirmDelete(
             {
-                // title: 'Confirmación Personalizada',
-                // message: `¿Quieres proceder con esta acción ${}?`,
+                // title: 'Confirmación de eliminación',
+                // message: `¿Estás seguro de que deseas eliminar esta categoría?`,
             }
         ).then(() => {
-            this._categoryService.delete$(idCategory).subscribe((response) => {
+            this._categoryService.delete$(idCategory).pipe(
+                take(1),
+                catchError((error) => {
+                    console.error('Error al eliminar categoría:', error);
+                    this.error = 'No se pudo eliminar la categoría. Intente nuevamente.';
+                    return of(null);
+                })
+            ).subscribe((response) => {
                 if (response) {
-                    // Actualizamos la lista local filtrando el elemento eliminado
                     this.categories = this.categories.filter(category => category.id !== idCategory);
                 }
             });

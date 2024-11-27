@@ -1,9 +1,6 @@
 package com.example.mscatalogo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -12,9 +9,9 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String franchise; // Franquicia a la que pertenecen los Funkos (e.g., "Marvel", "DC Comics")
-    private String type; // Tipo de Funko (e.g., "Pop!", "Vinyl Soda")
-    private Integer popularity; // Un valor numérico que indica la popularidad de la categoría
-
+    private String nombre;
+    @Column(nullable = true)
+    private String discripcion;
+    private Integer codigo;
 
 }

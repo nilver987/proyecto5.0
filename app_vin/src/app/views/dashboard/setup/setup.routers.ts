@@ -7,7 +7,7 @@ export default [
         component: SetupComponent,
         children: [
             {path: 'inventario', loadChildren: () => import('./inventario/inventario.routers')},
-            {path: 'pedido', loadChildren: () => import('./pedido/pedido.routers')},
+
             {path: 'envio', loadChildren: () => import('./envio/envio.routers')},
             {path: 'product', loadChildren: () => import('./product/product.routers')},
             {path: 'proveedor', loadChildren: () => import('./proveedor/proveedor.routers')},
