@@ -1,15 +1,12 @@
 server:
   port: 8085
 
-
 eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
   instance:
-    #hostname: localhost
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-
 
 spring:
   cloud:
@@ -26,63 +23,46 @@ spring:
               - DELETE
       discovery:
         locator:
-          enable: true
-          # Habilita el descubrimiento dinámico de rutas basadas en los servicios registrados en Eureka (utiliza `lb://` para balanceo de carga).
+          enable: true  # Habilita el descubrimiento dinámico de rutas basadas en los servicios registrados en Eureka.
 
       routes:
         - id: ms-catalogo-service
-        - uri: lb://ms-catalogo-service
-        - predicates:
-          - Path=/category/**, /product/**
-
-
+          uri: lb://ms-catalogo-service
+          predicates:
+            - Path=/category/**
+            - Path=/product/**
 
         - id: ms-auth-service
-          uri: lb://ms-auth-service  # Ruta para el servicio de autenticación
+          uri: lb://ms-auth-service
           predicates:
-            - Path=/auth/**  # Rutas que comienzan con `/auth/` se enrutan a este servicio.
-
-
+            - Path=/auth/**
 
         - id: ms-envio-service
-          uri: lb://ms-envio-service  # Ruta para el servicio ms-envio-service
+          uri: lb://ms-envio-service
           predicates:
-            - Path=/envio/**  # Rutas que comienzan con `/envio/` se enrutan a este servicio.
-          #filters:
-            #- AuthFilter  # Filtro de autorización.
+            - Path=/envio/**
 
         - id: ms-proveedor-service
-          uri: lb://ms-proveedor-service  # Ruta para el servicio ms-proveedor-service
+          uri: lb://ms-proveedor-service
           predicates:
-            - Path=/proveedor/**  # Rutas que comienzan con `/proveedor/` se enrutan a este servicio.
-          #filters:
-           # - AuthFilter  # Filtro de autorización.
+            - Path=/proveedor/**
 
         - id: ms-pedido-service
-          uri: lb://ms-pedido-service  # Ruta para el servicio ms-pedido-service
+          uri: lb://ms-pedido-service
           predicates:
-            - Path=/pedido/**  # Rutas que comienzan con `/pedido/` se enrutan a este servicio.
-          #filters:
-            #- AuthFilter  # Filtro de autorización.
+            - Path=/pedido/**
 
         - id: ms-inventario-service
-          uri: lb://ms-inventario-service  # Ruta para el servicio ms-inventario-service
+          uri: lb://ms-inventario-service
           predicates:
-            - Path=/inventario/**  # Rutas que comienzan con `/inventario/` se enrutan a este servicio.
-          #filters:
-            #- AuthFilter  # Filtro de autorización.
+            - Path=/inventario/**
 
         - id: ms-cliente-service
-          uri: lb://ms-cliente-service  # Ruta para el servicio ms-cliente-service
+          uri: lb://ms-cliente-service
           predicates:
-            - Path=/cliente/**  # Rutas que comienzan con `/cliente/` se enrutan a este servicio.
-          #filters:
-           # - AuthFilter  # Filtro de autorización.
+            - Path=/cliente/**
 
         - id: ms-pago-service
-          uri: lb://ms-pago-service  # Ruta para el servicio ms-cliente-service
+          uri: lb://ms-pago-service
           predicates:
-            - Path=/pago/**  # Rutas que comienzan con `/cliente/` se enrutan a este servicio.
-          #filters:
-           # - AuthFilter  # Filtro de autorización.
-
+            - Path=/pago/**
