@@ -30,8 +30,8 @@ spring:
           # Habilita el descubrimiento dinámico de rutas basadas en los servicios registrados en Eureka (utiliza `lb://` para balanceo de carga).
 
       routes:
-        - id: ms-catalog-service
-          uri: lb://ms-catalog-service
+        - id: ms-catalogo-service
+          uri: lb://ms-catalogo-service
           predicates:
             - Path=/category/**, /product/**
 
