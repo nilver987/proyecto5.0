@@ -1,12 +1,13 @@
 package com.example.msenvio.dto;
 
-import lombok.Data; // Importa la anotación Data de Lombok para generar métodos automáticamente
+import lombok.Data;
 
-@Data // Genera automáticamente los métodos getters, setters, toString, equals y hashCode
+import java.math.BigDecimal;
+
+@Data
 public class ProductoDto {
-    private Integer id; // Identificador único del producto
-    private String nombre; // Nombre del producto
-    private String modelo; // Modelo del producto
-    private Integer codigo; // Código del producto (puede ser un código SKU o similar)
-    private byte[] imagen;
+    private Integer id;
+    private String nombre;
+    private String marca;
+    private BigDecimal precio;
 }
